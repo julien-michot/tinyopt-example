@@ -7,14 +7,11 @@ project(tinyopt-example VERSION 0.0.1
 # Compiler flags
 set(CMAKE_CXX_STANDARD 20)
 
-# Import Eigen (Mandatory)
-find_package(Eigen3 REQUIRED NO_MODULE)
-
 # Find Tinyopt, fetch it if not found
 find_package(Tinyopt)
 
 if (NOT Tinyopt_FOUND)
-  message("Tinyopt not found locally, fetching it")
+  message("Tinyopt not found locally, fetching it...")
   include(FetchContent)
   FetchContent_Declare(
       tinyopt
@@ -29,4 +26,4 @@ endif()
 
 # Header-only library
 add_executable(example src/example.cpp)
-target_link_libraries(example PUBLIC Eigen3::Eigen tinyopt)
+target_link_libraries(example PUBLIC tinyopt)
