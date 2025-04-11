@@ -7,6 +7,8 @@ project(tinyopt-example VERSION 0.0.1
 # Compiler flags
 set(CMAKE_CXX_STANDARD 20)
 
+find_package(Eigen3) # Only needed if Tinyopt is not found locally
+
 # Find Tinyopt, fetch it if not found
 find_package(Tinyopt)
 
@@ -20,10 +22,13 @@ if (NOT Tinyopt_FOUND)
       GIT_SHALLOW     TRUE
       GIT_PROGRESS    TRUE
   )
-  set(BUILD_TINYOPT_TESTS OFF)
+  set(TINYOPT_BUILD_TESTS OFF)
   FetchContent_MakeAvailable(tinyopt)
+else()
+  message("Tinyopt found at ${Tinyopt_INCLUDE_DIRS}")
 endif()
 
 # Header-only library
 add_executable(example src/example.cpp)
-target_link_libraries(example PUBLIC tinyopt)
+target_link_libraries(example PUBLIC tinyopt) # PULIC when Fetched, INTERFACE otherwise...
+target_link_libraries(example PUBLIC Eigen3::Eigen)

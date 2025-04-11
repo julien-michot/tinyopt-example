@@ -15,5 +15,28 @@ jobs:
 
       - name: Build Tinyopt-example
         run: |-
-              cmake ./ -B build -DBUILD_TINYOPT_TESTS=OFF
+              cmake ./ -B build -DTINYOPT_BUILD_TESTS=OFF
+              cmake --build build -j 4
+
+  linux-build-deb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      - name: Install dependencies
+        run: |-
+              sudo apt-get install build-essential cmake libeigen3-dev
+
+      - name: Install Tinyopt as a dependency
+        run: |-
+              TAG=`git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.com/julien-michot/tinyopt.git/ | tail --lines=1 | cut --delimiter='/' --fields=3`
+              echo $TAG
+              wget -q --no-check-certificate https://github.com/julien-michot/tinyopt/releases/download/$TAG/tinyopt-${TAG:1}-Linux.deb
+              sudo dpkg -i tinyopt-${TAG:1}-Linux.deb
+
+      - name: Build Tinyopt-example
+        run: |-
+              cmake ./ -B build
               cmake --build build -j 4
