@@ -15,9 +15,10 @@ jobs:
 
       - name: Build Tinyopt-example
         run: |-
-              cmake ./ -B build -DBUILD_TINYOPT_TESTS=OFF
+              cmake ./ -B build -DTINYOPT_BUILD_TESTS=OFF
               cmake --build build -j 4
-  linux-build-apk:
+
+  linux-build-deb:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -37,5 +38,5 @@ jobs:
 
       - name: Build Tinyopt-example
         run: |-
-              cmake ./ -B build -DBUILD_TINYOPT_TESTS=OFF
+              cmake ./ -B build
               cmake --build build -j 4

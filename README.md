@@ -10,9 +10,11 @@ Minimal Tinyopt project
 set(CMAKE_CXX_STANDARD 20) # Minimum is c++17
 
 find_package(Tinyopt)
+find_package(Eigen3) # Only needed if Tinyopt is not found locally
 
 add_executable(example src/example.cpp)
 target_link_libraries(example PUBLIC tinyopt)
+target_link_libraries(example PUBLIC Eigen3::Eigen) # needed, sometimes...
 ```
 
 ### Alternative using `git submodule`
